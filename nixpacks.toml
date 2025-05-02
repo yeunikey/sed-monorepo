@@ -3,6 +3,7 @@ nixPkgs = ["nodejs_18", "pnpm"]
 
 [phases.install]
 cmds = [
+  "ls",
   "pnpm install",
 ]
 
