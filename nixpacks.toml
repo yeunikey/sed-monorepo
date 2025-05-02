@@ -1,3 +1,5 @@
+# .nixpacks.toml
+
 [phases.setup]
 nodejs = "20"
 pnpm = "9.x"
