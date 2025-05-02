@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "concurrently \"pnpm --filter backend start:dev\" \"pnpm --filter frontend dev\"",
+    "build": "concurrently \"pnpm --filter backend build\" \"pnpm --filter frontend build\"",
+    "start:frontend": "pnpm --filter frontend start",
+    "start:backend": "pnpm --filter backend start",
+    "start:all": "concurrently \"pnpm start:frontend\" \"pnpm start:backend\""
   },
   "keywords": [],
   "author": "",
@@ -12,5 +16,8 @@
   "workspaces": [
     "backend",
     "frontend"
-  ]
+  ],
+  "dependencies": {
+    "concurrently": "^9.1.2"
+  }
 }
