@@ -3,15 +3,14 @@ nixPkgs = ["nodejs_18", "pnpm"]
 
 [phases.install]
 cmds = [
-  "cd /app/frontend && pnpm install",
-  "cd /app/backend && pnpm install"
+  "pnpm install",
 ]
 
 [phases.build]
 cmds = [
-  "cd /app/frontend && pnpm run build",
-  "cd /app/backend && pnpm run build"
+  "cd /frontend && pnpm run build",
+  "cd /backend && pnpm run build"
 ]
 
 [start]
-cmd = "cd /app/frontend && pnpm start & cd /app/backend && pnpm start"
+cmd = "cd /frontend && pnpm start & cd /backend && pnpm start"
