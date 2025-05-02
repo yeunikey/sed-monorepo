@@ -1,20 +1,17 @@
-# .nixpacks.toml
-
 [phases.setup]
-nodejs = "20"
-pnpm = "9.x"
+nixPkgs = ["nodejs_18", "pnpm"]
 
 [phases.install]
 cmds = [
-  "cd frontend && pnpm install",
-  "cd backend && pnpm install"
+  "cd /app/frontend && pnpm install",
+  "cd /app/backend && pnpm install"
 ]
 
 [phases.build]
 cmds = [
-  "cd frontend && pnpm run build",
-  "cd backend && pnpm run build"
+  "cd /app/frontend && pnpm run build",
+  "cd /app/backend && pnpm run build"
 ]
 
 [start]
-cmd = "pnpm --filter frontend run start & pnpm --filter backend run start"
+cmd = "cd /app/frontend && pnpm start & cd /app/backend && pnpm start"
