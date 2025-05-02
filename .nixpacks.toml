@@ -1,0 +1,18 @@
+[phases.setup]
+nodejs = "20"
+pnpm = "9.x"
+
+[phases.install]
+cmds = [
+  "cd frontend && pnpm install",
+  "cd backend && pnpm install"
+]
+
+[phases.build]
+cmds = [
+  "cd frontend && pnpm run build",
+  "cd backend && pnpm run build"
+]
+
+[start]
+cmd = "pnpm --filter frontend run start & pnpm --filter backend run start"
