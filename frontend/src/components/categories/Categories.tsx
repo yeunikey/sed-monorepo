@@ -1,14 +1,33 @@
-'use client'
+'use client';
 
+import { ApiResponse, Category } from "@/types";
+import { useEffect, useRef, useState } from "react";
+
+import CategoriesDropdown from "./CategoriesDropdown";
+import CategoryItem from "./CategoryItem";
 import Image from "next/image";
-import Link from "next/link";
-import { useRef, useEffect } from "react";
+import { api } from "@/api/instance";
+import { useCategories } from "@/hooks/category";
+import { useSearchParams } from "next/navigation";
 
 function Categories() {
+    const searchParams = useSearchParams();
 
     const scrollRef = useRef<HTMLDivElement>(null);
+    const { categories, setCategories } = useCategories();
+
+    const [dropdown, setDropdown] = useState(false);
+
+    const fetchCategories = async () => {
+        await api.get<ApiResponse<Category[]>>('/categories')
+            .then((response) => {
+                setCategories(response.data.data)
+            })
+    }
 
     useEffect(() => {
+        fetchCategories();
+
         const el = scrollRef.current;
         if (!el) return;
 
@@ -26,8 +45,14 @@ function Categories() {
     return (
         <div className="sticky top-0 z-50 bg-muted px-6 md:px-12 flex gap-6 md:gap-12">
 
+            {dropdown && (<CategoriesDropdown></CategoriesDropdown>)}
+
             <section className="flex items-center">
-                <button className="bg-dark rounded-full px-6 py-2 flex gap-2.5 items-center cursor-pointer">
+                <button className="bg-dark rounded-full px-6 py-2 flex gap-2.5 items-center cursor-pointer"
+                    onClick={() => {
+                        setDropdown(!dropdown)
+                    }}
+                >
                     <Image
                         src={'/icons/folders.svg'}
                         alt="folders icon"
@@ -45,31 +70,10 @@ function Categories() {
 
             <section ref={scrollRef} className="flex gap-6 overflow-x-scroll hidden-scrollbar">
 
-                <Link href="/category" className="relative text-dark py-3 cursor-pointer ">
-                    Электроника
-                    <div className="absolute bg-dark bottom-0 h-0.5 w-full" />
-                </Link>
-                <Link href="/category" className="text-dark py-3 text-nowrap cursor-pointer opacity-50 hover:opacity-100">
-                    Бытовая техника
-                </Link>
-                <Link href="/category" className="text-dark py-3 text-nowrap cursor-pointer opacity-50 hover:opacity-100">
-                    Одежда
-                </Link>
-                <Link href="/category" className="text-dark py-3 text-nowrap cursor-pointer opacity-50 hover:opacity-100">
-                    Обувь
-                </Link>
-                <Link href="/category" className="text-dark py-3 text-nowrap cursor-pointer opacity-50 hover:opacity-100">
-                    Аксессуары
-                </Link>
-                <Link href="/category" className="text-dark py-3 text-nowrap cursor-pointer opacity-50 hover:opacity-100">
-                    Красота и уход
-                </Link>
-                <Link href="/category" className="text-dark py-3 text-nowrap cursor-pointer opacity-50 hover:opacity-100">
-                    Здоровье
-                </Link>
-                <Link href="/category" className="text-dark py-3 text-nowrap cursor-pointer opacity-50 hover:opacity-100">
-                    Товары для дома
-                </Link>
+                {categories.map((category) => {
+                    const category_id = searchParams.get('category_id');
+                    return <CategoryItem key={category.id} isActive={category_id ? Number(category_id) == category.id : false} category={category}></CategoryItem>
+                })}
 
             </section>
 

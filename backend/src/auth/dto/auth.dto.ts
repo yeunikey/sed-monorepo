@@ -13,3 +13,13 @@ export interface LoginDto {
     email: string,
     password: string
 }
+
+export interface ChangePasswordDto {
+    oldPassword: string,
+    newPassword: string,
+    repeatPassword: string
+}
+
+export interface ChangeMailDto {
+    newMail: string;
+}

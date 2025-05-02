@@ -1,6 +1,10 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
+
+import Authorize from "@/components/Authorize";
+import { Inter } from "next/font/google";
+import type { Metadata } from "next";
+import { Suspense } from "react";
+import { ToastContainer } from "react-toastify";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -10,7 +14,6 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "SED маркетплейс",
   description: "Разрабатывается yeunikey.dev",
-  themeColor: "#ffffff",
   manifest: "/manifest.json",
 };
 
@@ -24,7 +27,13 @@ export default function RootLayout({
       <body
         className={`${inter.variable} antialiased`}
       >
-        {children}
+        <Suspense>
+          <Authorize>
+            {children}
+
+            <ToastContainer />
+          </Authorize>
+        </Suspense>
       </body>
     </html>
   );

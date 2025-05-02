@@ -1,6 +1,6 @@
-import { twMerge } from "tailwind-merge"
+import { ClassNameValue, twMerge } from "tailwind-merge"
 
-const cn = (...className: string[]) => {
+const cn = (...className: ClassNameValue[]) => {
     return twMerge(className);
 }
 

@@ -3,7 +3,7 @@ import { User } from "./user.entity";
 
 @Entity()
 export class ShopInfo {
-    
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -13,7 +13,8 @@ export class ShopInfo {
   @Column()
   address: string;
 
-  @OneToOne(() => User, (user) => user.shopinfo)
-  @JoinColumn({ name: "user_id" })
+  @OneToOne(() => User, (user) => user.shopinfo, { onDelete: "CASCADE" })
+  @JoinColumn()
   user: User;
+
 }

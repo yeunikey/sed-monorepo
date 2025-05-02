@@ -2,13 +2,15 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { User } from "./models/user.entity";
+import { ImageService } from "src/image/image.service";
 
 @Injectable()
 export class UserService {
 
     constructor(
         @InjectRepository(User)
-        private userRepository: Repository<User>
+        private userRepository: Repository<User>,
+        private imageService: ImageService
     ) { }
 
     async findById(id: number) {
@@ -16,7 +18,7 @@ export class UserService {
             id: id
         });
     }
-    
+
     async findByEmail(email: string) {
         return await this.userRepository.findOneBy({
             email: email
@@ -29,12 +31,24 @@ export class UserService {
         });
     }
 
+    async findByIdWithSavedProducts(id: number) {
+        return this.userRepository.findOne({
+            where: { id },
+            relations: ['savedProducts'],
+        });
+    }
+
     async save(user: User) {
         return await this.userRepository.save(user);
     }
 
-    async delete(id: number) {
-        return await this.userRepository.delete(id);
+    async delete(user: User) {
+
+        if (user.image) {
+            await this.imageService.delete(user.image);
+        }
+
+        return await this.userRepository.remove(user);
     }
 
 } 

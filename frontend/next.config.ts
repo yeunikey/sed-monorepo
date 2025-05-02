@@ -1,7 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    domains: ['localhost'], // 👈 разрешаем картинки с localhost
+  },
+  reactStrictMode: false
 };
 
 export default nextConfig;

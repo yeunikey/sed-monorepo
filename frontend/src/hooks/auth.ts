@@ -2,16 +2,22 @@ import { User } from "@/types";
 import { create } from "zustand";
 
 type UserType = {
-    student: User | null;
+    user: User | null;
+    token: string;
 
-    setStudent: (user: Student | null) => void;
+    setUser: (user: User | null) => void;
+    setToken: (string: string) => void;
 
 };
 
 export const useAuth = create<UserType>((set) => ({
-    student: null,
+    user: null,
+    token: "",
 
-    setStudent: (student) => set({
-        student: student
+    setUser: (user) => set({
+        user: user
+    }),
+    setToken: (token) => set({
+        token: token
     }),
 }));
