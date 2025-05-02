@@ -8,9 +8,9 @@ cmds = [
 
 [phases.build]
 cmds = [
-  "cd /frontend && pnpm run build",
-  "cd /backend && pnpm run build"
+  "cd /app/frontend && pnpm run build",
+  "cd /app/backend && pnpm run build"
 ]
 
 [start]
-cmd = "cd /frontend && pnpm start & cd /backend && pnpm start"
+cmd = "cd /app/frontend && pnpm start & cd /app/backend && pnpm start"
