@@ -1,24 +1,19 @@
-import { forwardRef, Module } from "@nestjs/common";
-import { UserService } from "./user.service";
+import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "./models/user.entity";
-import { ShopInfo } from "./models/shopinfo.entity";
 import { UserController } from "./user.controller";
-import { ImageModule } from "src/image/image.module";
-import { ProductModule } from "src/products/product.module";
+import { UserService } from "./user.service";
 
 @Module({
     providers: [
         UserService,
     ],
     controllers: [
-        UserController,
+        UserController
     ],
 
     imports: [
-        TypeOrmModule.forFeature([User, ShopInfo]),
-        ImageModule,
-        forwardRef(() => ProductModule)
+        TypeOrmModule.forFeature([User]),
     ],
     exports: [
         UserService

@@ -1,8 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { DeepPartial, Repository } from "typeorm";
 import { User } from "./models/user.entity";
-import { ImageService } from "src/image/image.service";
 
 @Injectable()
 export class UserService {
@@ -10,8 +9,11 @@ export class UserService {
     constructor(
         @InjectRepository(User)
         private userRepository: Repository<User>,
-        private imageService: ImageService
     ) { }
+
+    async all() {
+        return await this.userRepository.find();
+    }
 
     async findById(id: number) {
         return await this.userRepository.findOneBy({
@@ -19,36 +21,18 @@ export class UserService {
         });
     }
 
-    async findByEmail(email: string) {
+    async findByLogin(login: string) {
         return await this.userRepository.findOneBy({
-            email: email
+            login
         });
     }
 
-    async findByPhone(phone: string) {
-        return await this.userRepository.findOneBy({
-            phone: phone
-        });
-    }
-
-    async findByIdWithSavedProducts(id: number) {
-        return this.userRepository.findOne({
-            where: { id },
-            relations: ['savedProducts'],
-        });
-    }
-
-    async save(user: User) {
+    async save(user: DeepPartial<User>) {
         return await this.userRepository.save(user);
     }
 
-    async delete(user: User) {
-
-        if (user.image) {
-            await this.imageService.delete(user.image);
-        }
-
-        return await this.userRepository.remove(user);
+    async delete(id: number) {
+        return await this.userRepository.delete(id);
     }
 
 } 

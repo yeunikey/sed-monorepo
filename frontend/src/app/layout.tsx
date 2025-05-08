@@ -1,20 +1,18 @@
 import "./globals.css";
 
 import Authorize from "@/components/Authorize";
-import { Inter } from "next/font/google";
 import type { Metadata } from "next";
-import { Suspense } from "react";
+import { Roboto } from "next/font/google";
 import { ToastContainer } from "react-toastify";
 
-const inter = Inter({
-  variable: "--font-inter",
+const roboto = Roboto({
+  variable: "--font-roboto",
   subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "SED маркетплейс",
-  description: "Разрабатывается yeunikey.dev",
-  manifest: "/manifest.json",
+  title: "Исскуственный Интеллект для Департамента Маркетинга",
+  description: "Разработано yeunikey.dev",
 };
 
 export default function RootLayout({
@@ -25,15 +23,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} antialiased`}
+        className={`${roboto.variable} antialiased`}
       >
-        <Suspense>
-          <Authorize>
-            {children}
 
-            <ToastContainer />
-          </Authorize>
-        </Suspense>
+        <ToastContainer position="bottom-right" />
+
+        <Authorize>
+          {children}
+        </Authorize>
       </body>
     </html>
   );

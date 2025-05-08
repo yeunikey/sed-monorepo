@@ -1,92 +1,151 @@
 'use client'
 
-import { api } from "@/api/instance";
-import ProductItem from "@/components/product/ProductItem";
-import View from "@/components/View";
-import { ApiResponse, Product } from "@/types";
-import Image from "next/image";
-import { useState, useEffect } from "react";
+import { ApiResponse, DataSet } from "@/types"
+import {
+    Box,
+    Button,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography,
+} from "@mui/material";
+import { useEffect, useState } from "react"
 
-import 'swiper/css'
-import 'swiper/css/navigation'
+import CreateModal from "@/components/pages/data/CreateModal"
+import DataRow from "@/components/pages/data/DataRow"
+import ImportModal from "@/components/pages/data/ImportModal"
+import Links from "@/components/LinkList"
+import View from "@/components/View"
+import { api } from "@/api/instance"
+import { toast } from "react-toastify"
+import { useAuth } from "@/hooks/auth"
+import { useDataset } from "@/hooks/datasets"
 
-export default function Home() {
+export default function DataPage() {
 
-  const [products, setProducts] = useState<Product[]>([]);
-  const [currentSlider, setSlider] = useState(1);
+    const [createModal, setCreateModal] = useState(false);
+    const [importModal, setImportModal] = useState(false);
 
-  const fetchProducts = async () => {
-    await api.get<ApiResponse<Product[]>>('/products/')
-      .then((response) => {
-        setProducts(response.data.data);
-      })
-  }
+    const { token } = useAuth();
+    const { datasets, setDatasets } = useDataset();
 
-  useEffect(() => {
-    fetchProducts()
-  }, [])
 
-  return (
-    <View container>
+    const handleDownload = async () => {
+        const headers = ['question', 'answer'];
+        const rows = datasets.map(data =>
+            [
+                data.question.replace(/\n/g, ' '),
+                data.answer.replace(/\n/g, ' ')
+            ]
+        );
 
-      <section className="mt-6 bg-[#86A372] rounded-2xl h-60 flex justify-center items-center overflow-hidden">
+        const csvContent =
+            [headers, ...rows]
+                .map(e => e.map(field => `"${field}"`).join(',')) // защищает поля с запятыми
+                .join('\n');
 
-        <div className="text-white/25 font-bold text-5xl md:text-8xl">
-          {'СЛАЙДЕР #' + currentSlider}
-        </div>
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
 
-        <div className="absolute left-10 h-9 w-9 bg-dark rounded-full flex justify-center items-center cursor-pointer"
-          onClick={() => {
-            if (currentSlider == 1) {
-              return;
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'datasets.csv');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    const handleDelete = async (id: number) => {
+        await api.delete<ApiResponse<DataSet[]>>('/datasets?id=' + id, {
+            headers: {
+                Authorization: 'Bearer ' + token
             }
+        })
+            .then(({ data }) => {
+                if (data.statusCode != 200) {
+                    toast.error(data.message);
+                }
 
-            setSlider(currentSlider - 1);
-          }}
-        >
-          <Image
-            src={'/icons/arrow.svg'}
-            alt="arrow icon"
-            width={8}
-            height={14}
+                setDatasets(datasets.filter(s => s.id != id))
 
-            className="h-3.5 w-auto"
-          ></Image>
-        </div>
+            });
+    }
 
-        <div className="absolute right-10 rotate-180 h-9 w-9 bg-dark rounded-full flex justify-center items-center cursor-pointer"
-          onClick={() => {
-            if (currentSlider == 3) {
-              return;
+    const fetchData = async () => {
+        await api.get<ApiResponse<DataSet[]>>('/datasets', {
+            headers: {
+                Authorization: 'Bearer ' + token
             }
+        })
+            .then(({ data }) => {
+                setDatasets(data.data)
+            });
+    }
 
-            setSlider(currentSlider + 1);
-          }}
-        >
-          <Image
-            src={'/icons/arrow.svg'}
-            alt="arrow icon"
-            width={8}
-            height={14}
 
-            className="h-3.5 w-auto"
-          ></Image>
-        </div>
+    useEffect(() => {
+        if (token == '') {
+            return;
+        }
 
-      </section>
+        fetchData();
+    }, [token]);
 
-      <section className="mt-6 flex flex-col gap-3">
-        <div className="text-3xl font-semibold">
-          Рекомендуем вам
-        </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 gap-6">
-          {products.map((product, i) => {
-            return <ProductItem key={i} product={product}></ProductItem>
-          })}
-        </div>
-      </section>
+    return (
+        <View>
 
-    </View>
-  );
+            <CreateModal open={createModal} setOpen={setCreateModal} />
+            <ImportModal open={importModal} setOpen={setImportModal} />
+
+            <Links>
+                <Typography sx={{ color: 'inherit' }}>Деп. Маркетинга</Typography>
+                <Typography sx={{ color: 'text.primary' }}>Датасет</Typography>
+            </Links>
+
+            <Box sx={{ px: 2, pb: 16 }}>
+                <div className="flex flex-col gap-2 mt-6">
+                    <div className="flex gap-2">
+                        <Button variant="contained" size="small" disableElevation={true}
+                            onClick={() => {
+                                setCreateModal(true)
+                            }}
+                        >
+                            Добавить
+                        </Button>
+                        <Button variant="contained" size="small" disableElevation={true}
+                            onClick={() => {
+                                setImportModal(true);
+                            }}
+                        >
+                            Импортировать .csv
+                        </Button>
+                        <Button variant="outlined" size="small" disableElevation={true} onClick={handleDownload}>Экспортировать .csv</Button>
+                    </div>
+                    <TableContainer component={Paper}>
+                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell />
+                                    <TableCell>ID</TableCell>
+                                    <TableCell>Вопрос</TableCell>
+                                </TableRow>
+                            </TableHead>
+
+                            <TableBody>
+                                {datasets.map((data) => (
+                                    <DataRow key={data.id} data={data} handleDelete={handleDelete}></DataRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </div>
+            </Box>
+
+        </View>
+    )
 }

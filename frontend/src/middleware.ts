@@ -11,7 +11,7 @@ export function middleware(req: NextRequest) {
   }
 
   // Если юзер НЕ авторизован и пытается зайти НЕ на /auth, отправляем его на /auth
-  if (!token && (pathname === "/settings" || pathname === "/item/edit" || pathname === "/item/create" || pathname === "/saved")) {
+  if (!token && (pathname != '/auth')) {
     return NextResponse.redirect(new URL("/auth", req.url));
   }
 

@@ -1,25 +1,12 @@
-import { User } from "src/users/models/user.entity";
+import { IsNotEmpty, IsString } from "@nestjs/class-validator";
 
-export interface RegisterDto {
-    user: User
-}
+export class LoginDto {
 
-export interface ConfirmDto {
-    code: number,
-    email: string,
-}
+    @IsString()
+    @IsNotEmpty()
+    login: string;
 
-export interface LoginDto {
-    email: string,
+    @IsString()
+    @IsNotEmpty()
     password: string
-}
-
-export interface ChangePasswordDto {
-    oldPassword: string,
-    newPassword: string,
-    repeatPassword: string
-}
-
-export interface ChangeMailDto {
-    newMail: string;
 }

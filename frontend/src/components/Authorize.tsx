@@ -1,12 +1,11 @@
-'use client';
+'use client'
 
 import { ApiResponse, User } from "@/types";
 import { ReactNode, useEffect, useState } from "react";
-
-import BlurLoading from "./loading/BlurLoading";
 import Cookies from 'js-cookie';
 import { api } from "@/api/instance";
 import { useAuth } from "@/hooks/auth";
+import Loading from "./Loading";
 
 interface AuthProps {
     children?: ReactNode
@@ -35,7 +34,7 @@ function Authorize({ children }: AuthProps) {
         })
             .then((response) => {
 
-                if (response.data.statusCode != 200) {
+                if (response.data.statusCode == 400) {
                     setLoading(false);
                     Cookies.remove('token');
                     return;
@@ -56,7 +55,11 @@ function Authorize({ children }: AuthProps) {
 
     return (
         <>
-            {isLoading && (<BlurLoading></BlurLoading>)}
+            {isLoading && (
+                <div className="w-full h-dvh flex items-center justify-center">
+                    <Loading></Loading>
+                </div>
+            )}
             {children}
         </>
     );
