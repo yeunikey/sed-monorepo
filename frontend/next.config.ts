@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ['localhost'], // 👈 разрешаем картинки с localhost
+    domains: ['localhost', 'api.sedmarket.kz'], // 👈 добавили api.sedmarket.kz
   },
   reactStrictMode: false
 };
