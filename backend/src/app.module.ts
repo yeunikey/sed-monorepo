@@ -30,10 +30,10 @@ import { VariableCategory } from './category/models/vars.entity';
 
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: '35.234.116.136',
-      port: 9909,
-      username: 'yeunikey',
-      password: 'Yerassyl0107',
+      host: '34.141.54.61',
+      port: 1111,
+      username: 'admin',
+      password: 'Astana2024!',
       database: 'sed',
       entities: [User, ShopInfo, Category, SubCategory, VariableCategory, Image, Product, ProductVariable, Review],
       synchronize: true,
