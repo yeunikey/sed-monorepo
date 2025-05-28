@@ -1,8 +1,7 @@
-
-import { Module } from '@nestjs/common';
-import { MailService } from './mail.service';
 import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+import { MailService } from './mail.service';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { Module } from '@nestjs/common';
 
 @Module({
     imports: [
@@ -10,7 +9,7 @@ import { MailerModule } from '@nestjs-modules/mailer';
             transport: {
                 host: 'smtp.mail.ru',
                 port: 465,
-                secure: true, // Для портов 465 используйте secure: true
+                secure: false, // Для портов 465 используйте secure: true
                 auth: {
                     user: 'support@unilabs.studio',
                     pass: 'TEUdNkLjVYvsxk1RBVtJ', // Пароль приложения

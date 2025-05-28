@@ -1,7 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, OneToMany, ManyToMany, JoinTable } from "typeorm";
-import { ShopInfo } from "./shopinfo.entity";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+
 import { Product } from "src/products/entities/product.entity";
 import { Review } from "src/products/entities/review";
+import { ShopInfo } from "./shopinfo.entity";
 
 @Entity("users")
 export class User {
@@ -21,7 +22,7 @@ export class User {
   @Column()
   email: string;
 
-  @Column({ })
+  @Column({})
   password: string;
 
   @Column({ default: 0.0, type: 'float' })
@@ -48,6 +49,5 @@ export class User {
 
   @OneToMany(() => Review, review => review.seller)
   reviewsReceived: Review[];
-
 
 }

@@ -1,10 +1,13 @@
 import { AuthModule } from './auth/auth.module';
 import { Category } from './category/models/category.entity';
 import { CategoryModule } from './category/category.module';
+import { Chat } from './chat/models/chat.entity';
+import { ChatModule } from './chat/chat.module';
 import { Image } from './image/entities/image.entity';
 import { ImageModule } from './image/image.module';
 import { MailModule } from './mailer/mail.module';
 import { MarketModule } from './market/market.module';
+import { Message } from './chat/models/message.entity';
 import { Module } from '@nestjs/common';
 import { Product } from './products/entities/product.entity';
 import { ProductModule } from './products/product.module';
@@ -27,6 +30,7 @@ import { VariableCategory } from './category/models/vars.entity';
     ImageModule,
     ProductModule,
     MarketModule,
+    ChatModule,
 
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -35,7 +39,7 @@ import { VariableCategory } from './category/models/vars.entity';
       username: 'sed',
       password: 'Astana2024!',
       database: 'sed',
-      entities: [User, ShopInfo, Category, SubCategory, VariableCategory, Image, Product, ProductVariable, Review],
+      entities: [User, ShopInfo, Category, SubCategory, VariableCategory, Image, Product, ProductVariable, Review, Message, Chat],
       synchronize: true,
       // logging: true,
     }),
