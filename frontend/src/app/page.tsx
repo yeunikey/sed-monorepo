@@ -1,14 +1,15 @@
 'use client'
 
-import { api } from "@/api/instance";
-import ProductItem from "@/components/product/ProductItem";
-import View from "@/components/View";
-import { ApiResponse, Product } from "@/types";
-import Image from "next/image";
-import { useState, useEffect } from "react";
-
 import 'swiper/css'
 import 'swiper/css/navigation'
+
+import { ApiResponse, Product } from "@/types";
+import { useEffect, useState } from "react";
+
+import Image from "next/image";
+import ProductItem from "@/components/product/ProductItem";
+import View from "@/components/View";
+import { api } from "@/api/instance";
 
 export default function Home() {
 
@@ -29,13 +30,13 @@ export default function Home() {
   return (
     <View container>
 
-      <section className="mt-6 bg-[#86A372] rounded-2xl h-60 flex justify-center items-center overflow-hidden">
+      <section className="relative mt-6 bg-[#86A372] rounded-2xl h-72 flex justify-center items-center">
 
         <div className="text-white/25 font-bold text-5xl md:text-8xl">
           {'СЛАЙДЕР #' + currentSlider}
         </div>
 
-        <div className="absolute left-10 h-9 w-9 bg-dark rounded-full flex justify-center items-center cursor-pointer"
+        <div className="absolute -left-5 md:-left-16 h-9 w-9 bg-dark rounded-full flex justify-center items-center cursor-pointer"
           onClick={() => {
             if (currentSlider == 1) {
               return;
@@ -54,7 +55,7 @@ export default function Home() {
           ></Image>
         </div>
 
-        <div className="absolute right-10 rotate-180 h-9 w-9 bg-dark rounded-full flex justify-center items-center cursor-pointer"
+        <div className="absolute -right-5 md:-right-16 rotate-180 h-9 w-9 bg-dark rounded-full flex justify-center items-center cursor-pointer"
           onClick={() => {
             if (currentSlider == 3) {
               return;

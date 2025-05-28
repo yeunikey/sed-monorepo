@@ -1,10 +1,8 @@
 
 interface ApiResponse<T> {
-
   statusCode: number,
   message?: string,
   data: T
-
 }
 
 interface User {
