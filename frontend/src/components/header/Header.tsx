@@ -169,6 +169,16 @@ function Dropdown() {
                     Профиль
                 </Link>
                 <Link className="mt-1 py-2 w-full ps-6 bg-muted rounded-xl hover:bg-muted-dark/50 cursor-pointer"
+                    href={'/messages'}
+                >
+                    Сообщения
+                </Link>
+                <Link className="mt-1 py-2 w-full ps-6 bg-muted rounded-xl hover:bg-muted-dark/50 cursor-pointer"
+                    href={'/saved'}
+                >
+                    Избранное
+                </Link>
+                <Link className="mt-1 py-2 w-full ps-6 bg-muted rounded-xl hover:bg-muted-dark/50 cursor-pointer"
                     href={'/settings'}
                 >
                     Настройки

@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
 export function middleware(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
@@ -11,7 +11,7 @@ export function middleware(req: NextRequest) {
   }
 
   // Если юзер НЕ авторизован и пытается зайти НЕ на /auth, отправляем его на /auth
-  if (!token && (pathname === "/settings" || pathname === "/item/edit" || pathname === "/item/create" || pathname === "/saved")) {
+  if (!token && (pathname === "/settings" || pathname === "/item/edit" || pathname === "/item/create" || pathname === "/saved" || pathname === "/messages")) {
     return NextResponse.redirect(new URL("/auth", req.url));
   }
 
