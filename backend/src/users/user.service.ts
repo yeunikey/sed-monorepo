@@ -13,6 +13,21 @@ export class UserService {
         private imageService: ImageService
     ) { }
 
+    async searchByFullName(fullName: string) {
+        const qb = this.userRepository.createQueryBuilder('user');
+
+        if (fullName) {
+            const query = fullName.toLowerCase().trim();
+            qb.where("LOWER(CONCAT(user.name, ' ', user.surname)) LIKE :query", {
+                query: `%${query}%`,
+            });
+        }
+
+        qb.take(10);
+
+        return await qb.getMany();
+    }
+
     async findById(id: number) {
         return await this.userRepository.findOneBy({
             id: id

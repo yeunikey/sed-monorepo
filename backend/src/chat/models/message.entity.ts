@@ -16,6 +16,9 @@ export class Message {
     @CreateDateColumn()
     timestamp: Date;
 
+    @Column({ default: 'text' })
+    type: 'text' | 'image';
+
     @ManyToOne(() => Chat, chat => chat.messages, { onDelete: 'CASCADE' })
     chat: Chat;
 }

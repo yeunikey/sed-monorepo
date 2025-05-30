@@ -37,9 +37,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     async handleSendMessage(
         client: Socket,
         @MessageBody()
-        data: { chatId: number; senderId: number; content: string },
+        data: { chatId: number; senderId: number; content: string, type: "image" | "text" },
     ) {
-        const message = await this.chatService.sendMessage(data.chatId, data.senderId, data.content);
+        const message = await this.chatService.sendMessage(data.chatId, data.senderId, data.content, data.type);
         if (message) {
             this.server.to(`chat-${data.chatId}`).emit('newMessage', message);
         }
