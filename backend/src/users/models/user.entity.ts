@@ -10,6 +10,9 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @Column({ default: "USER" })
+  role: "USER" | "ADMIN";
+
   @Column()
   name: string;
 
