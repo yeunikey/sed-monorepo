@@ -183,6 +183,13 @@ function Dropdown() {
                 >
                     Настройки
                 </Link>
+                {user.role == "ADMIN" && (
+                    <Link className="mt-1 py-2 w-full ps-6 bg-muted rounded-xl hover:bg-muted-dark/50 cursor-pointer"
+                        href={'/admin'}
+                    >
+                        Администрирование
+                    </Link>
+                )}
             </div>
 
             <div className="bg-muted h-0.5 w-full my-4" />

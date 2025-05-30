@@ -17,6 +17,7 @@ interface User {
   password: string;
   shopinfo: ShopInfo;
   image: string;
+  role: "USER" | "ADMIN";
 
 }
 

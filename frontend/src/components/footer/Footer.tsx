@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Container from "../Container";
+import Image from "next/image";
 import Link from "next/link";
 
 function Footer() {
@@ -85,7 +85,7 @@ function Footer() {
                         </div>
 
                         <div className="text-dark-gray font-semibold">
-                            «2025© ООО «SED». ИИН XXXXXXXXXXXX. Все права защищены»
+                            «2025© ИП «Саламат». БИН 800929400976. Все права защищены»
                         </div>
 
                     </div>
