@@ -3,7 +3,7 @@
 import { ApiResponse, User } from "@/types"
 import { Socket, io } from "socket.io-client"
 import { Swiper, SwiperSlide } from "swiper/react"
-import { api, vapi } from "@/api/instance"
+import { api, socketUrl, vapi } from "@/api/instance"
 import { useEffect, useRef, useState } from "react"
 
 import Image from "next/image"
@@ -190,7 +190,7 @@ export default function Messages() {
         if (!token || !user) return;
 
         if (!socket) {
-            socket = io("http://localhost:3001", {
+            socket = io(socketUrl, {
                 transports: ["websocket"],
             });
 
